@@ -1,39 +1,46 @@
 <html>
 <head><title>Django District</title></head>
 <body>
-    <img src="http://192.168.1.25:8081/" style="width:100%; max-width: 600px; max-height:600px; border-radius:10px"></img>
-    <h1>In what cities other than DC have you gone to Python meetups?</h1>
-    <form method="post" action="#" id="cityform">
-        <label>City</label>
-        <input type="text" id="city"></input>
-        <input type="submit" value="Submit"></input>
-    </form>
-    <div id="cities-list"></div>
+    <img id="container" src="http://192.168.1.25:8081/" style="width:100%; max-width: 600px; max-height:600px; border-radius:10px"></img>
+    <h1>robot_pi premier test pour le mettre en mouvement press l'image </h1>
 
-    <script type="text/javascript"
-                src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+    <div id="result"></div>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script> -->
+    <script src="virtualjoystick.js" charset="utf-8"></script>
+    <script>
+    var url = "http://" + document.domain + ":" + location.port;
+    var socket = io.connect(url + "/dd");
+  console.log("touchscreen is", VirtualJoystick.touchScreenAvailable() ? "available" : "not available");
 
-    <script type="text/javascript">
-        $(document).ready(function() {
-            var url = "http://" + document.domain + ":" + location.port;
-            var socket = io.connect(url + "/dd");
-              $(document).keypress(function (e) {
-                console.log(e.whitch);
-              if (e.which == 13) {
-                alert('enter key is pressed');
-              }
-              });
-            $("#cityform").submit(function(event) {
-                socket.emit('motor', {'motor': 5, 'motoL': 6});
-                $('#city').val('');
-                return false;
-            });
-            socket.on('city', function(msg) {
-                $("#cities-list").prepend('<h3>' + msg.city + '<h3>');
-            });
+  var joystick	= new VirtualJoystick({
+    container	: document.getElementById('container'),
+    mouseSupport	: true,
+  });
+  joystick.addEventListener('touchStart', function(){
+    console.log('down')
+  })
+  joystick.addEventListener('touchEnd', function(){
+    console.log('up')
+  })
 
-        });
-    </script>
+  setInterval(function(){
+      joystick.right(socket.emit('motor', {'direction': 1, 'motoR': 0, 'motoL': 180}))
+      joystick.up(socket.emit('motor', {'direction': 1, 'motoR': 180, 'motoL': 180}))
+      joystick.left(socket.emit('motor', {'direction': 1, 'motoR': 180, 'motoL': 0}))
+      joystick.down(socket.emit('motor', {'direction': 0, 'motoR': 180, 'motoL': 180}))
+
+    var outputEl	= document.getElementById('result');
+    outputEl.innerHTML	= '<b>Result:</b> '
+      + ' dx:'+joystick.deltaX()
+      + ' dy:'+joystick.deltaY()
+      + (joystick.right()	? ' right'	: '')
+      + (joystick.up()	? ' up'		: '')
+      + (joystick.left()	? ' left'	: '')
+      + (joystick.down()	? ' down' 	: '')
+  }, 1/30 * 1000);
+</script>
+    <!-- <script src="htt" charset="utf-8"></script> -->
+
 </body>
 </html>
