@@ -22,8 +22,6 @@ class Motor:
 		vi = float(speed) + 5
 		GPIO.output(self.gpsens,   1 if self.sensdfault == 1 else 0)
 		self.gpspeed.ChangeDutyCycle(vi)
-		time.sleep(0.9)
-		self.gpspeed.ChangeDutyCycle(5)
 
 class Motorcar:
 
@@ -34,7 +32,7 @@ class Motorcar:
 	def forward(self, speedl, speedr):
 		self.left.forward(speedl)
 		self.right.forward(speedr)
-		time.sleep(0.9)
+		# time.sleep(0.9)
 
 
 

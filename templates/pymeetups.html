@@ -1,7 +1,7 @@
 <html>
 <head><title>Django District</title></head>
 <body>
-    <img id="container" src="http://192.168.1.25:8081/" style="width:100%; max-width: 600px; max-height:600px; border-radius:10px"></img>
+    <img  id="container" src="{{ url_for('video_feed') }}" style="width:100%; max-width: 600px; max-height:600px; border-radius:10px"></img>
     <h1>robot_pi premier test pour le mettre en mouvement press l'image </h1>
 
     <div id="result"></div>
@@ -23,22 +23,30 @@
   joystick.addEventListener('touchEnd', function(){
     console.log('up')
   })
+    setInterval(function(){
+      if (  joystick.right()) {
+        socket.emit('motor', {'direction': 1, 'motorR': 0, 'motorL': 90})
+      } else if (joystick.up()) {
+        socket.emit('motor', {'direction': 1, 'motorR': 90, 'motorL': 90})
+      }else if (  joystick.left()) {
+        socket.emit('motor', {'direction': 1, 'motorR': 90, 'motorL': 0})
+      }else if (joystick.down()) {
+        socket.emit('motor', {'direction': 0, 'motorR': 90, 'motorL': 90})
+      }else {
+        socket.emit('motor', {'direction': 1, 'motorR': 0, 'motorL': 0})
+      }
 
-  setInterval(function(){
-      joystick.right(socket.emit('motor', {'direction': 1, 'motoR': 0, 'motoL': 180}))
-      joystick.up(socket.emit('motor', {'direction': 1, 'motoR': 180, 'motoL': 180}))
-      joystick.left(socket.emit('motor', {'direction': 1, 'motoR': 180, 'motoL': 0}))
-      joystick.down(socket.emit('motor', {'direction': 0, 'motoR': 180, 'motoL': 180}))
+      var outputEl	= document.getElementById('result');
+      outputEl.innerHTML	= '<b>Result:</b> '
+        + ' dx:'+joystick.deltaX()
+        + ' dy:'+joystick.deltaY()
+        + (joystick.right()	? ' right'	: '')
+        + (joystick.up()	? ' up'		: '')
+        + (joystick.left()	? ' left'	: '')
+        + (joystick.down()	? ' down' 	: '')
+    }, 1/30 * 1000);
 
-    var outputEl	= document.getElementById('result');
-    outputEl.innerHTML	= '<b>Result:</b> '
-      + ' dx:'+joystick.deltaX()
-      + ' dy:'+joystick.deltaY()
-      + (joystick.right()	? ' right'	: '')
-      + (joystick.up()	? ' up'		: '')
-      + (joystick.left()	? ' left'	: '')
-      + (joystick.down()	? ' down' 	: '')
-  }, 1/30 * 1000);
+
 </script>
     <!-- <script src="htt" charset="utf-8"></script> -->
 

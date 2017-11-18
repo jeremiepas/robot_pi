@@ -5,24 +5,35 @@ import cgi
 import redis
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO
-# import motors
+from camera import VideoCamera
+import motors
 app = Flask(__name__, static_url_path='/static')
 db = redis.StrictRedis('localhost', 6379, 0)
 socketio = SocketIO(app)
 
-# motorL = motors.Motor(27,18,1)
-# motorR = motors.Motor(22,17,0)
-# car = motors.Motorcar(motorL, motorR)
+motorR = motors.Motor(27,17,1)
+motorL = motors.Motor(22,18,1)
+car = motors.Motorcar(motorL, motorR)
 
 @app.route('/')
 def main():
-    return render_template('main.html')
+    return render_template('pymeetups.html')
+
 
 
 @app.route('/pymeetups/')
 def pymeetups():
-    return render_template('pymeetups.html')
+    return render_template('main.html')
 
+def gen(camera):
+    while True:
+        frame = camera.get_frame()
+        yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
+@app.route('/video_feed')
+def video_feed():
+    return Response(gen(VideoCamera()),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @socketio.on('connect', namespace='/dd')
 def ws_conn():
@@ -36,8 +47,13 @@ def ws_disconn():
 
 @socketio.on('motor', namespace='/dd')
 def ws_city(message):
-    print(message)
-    # car.forward(message['motorL'], message['motorR'])
+    if message['direction']:
+        print(message['direction'])
+        print(message['motorL'])
+        car.forward(int(message['motorL']), int(message['motorR']))
+    else:
+        car.rearward(int(message['motorL']), int(message['motorR']))
+
     # socketio.emit('motor', {'motor': cgi.escape(message['motor'])})
 
 if __name__ == '__main__':
