@@ -6,8 +6,7 @@ import redis
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO
 # import motors
-
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 db = redis.StrictRedis('localhost', 6379, 0)
 socketio = SocketIO(app)
 
@@ -39,7 +38,7 @@ def ws_disconn():
 def ws_city(message):
     print(message)
     # car.forward(message['motorL'], message['motorR'])
-    socketio.emit('motor', {'motor': cgi.escape(message['motor'])})
+    # socketio.emit('motor', {'motor': cgi.escape(message['motor'])})
 
 if __name__ == '__main__':
     socketio.run(app, "0.0.0.0", port=5000)
