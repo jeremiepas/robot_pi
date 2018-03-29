@@ -3,7 +3,7 @@ import redis
 import cv2
 from flask import Flask, render_template, request, Response
 from flask_socketio import SocketIO
-
+import threading
 import motors
 
 app = Flask(__name__, static_url_path='/static')
@@ -56,7 +56,8 @@ def gen():
 @app.route('/video_feed')
 def video_feed():
     """Video streaming route. Put this in the src attribute of an img tag."""
-    return Response(gen(),
+    threading.Thread
+    return Response(threading.Thread(target=gen).start(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
