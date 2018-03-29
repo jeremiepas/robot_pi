@@ -56,8 +56,7 @@ def gen():
 @app.route('/video_feed')
 def video_feed():
     """Video streaming route. Put this in the src attribute of an img tag."""
-
-    return Response(threading.Thread(target=gen).start(),
+    return Response(gen(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
@@ -83,4 +82,4 @@ def ws_city(message):
     # socketio.emit('motor', {'motor': cgi.escape(message['motor'])})
 
 if __name__ == '__main__':
-    socketio.run(app, "0.0.0.0", port=5000)
+    socketio.run(app, "0.0.0.0", threaded=True ,port=5000)
