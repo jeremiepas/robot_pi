@@ -12,17 +12,23 @@ console.log('down')
 joystick.addEventListener('touchEnd', function(){
 console.log('up')
 })
+send = 0
 setInterval(function(){
-  console.log(joystick.down());
+
   if (joystick.right()) {
     socket.emit('motor', {'direction': 1, 'motorR': 0, 'motorL': 90})
+    send = true
   }else if (joystick.down()) {
     socket.emit('motor', {'direction': 0, 'motorR': 90, 'motorL': 90})
+    send = true
   } else if (joystick.up()) {
     socket.emit('motor', {'direction': 1, 'motorR': 90, 'motorL': 90})
-  }else if (  joystick.left()) {
+    send = true
+  }else if (joystick.left()) {
     socket.emit('motor', {'direction': 1, 'motorR': 90, 'motorL': 0})
-  }else {
+    send = true
+  } else if (send) {
+    send = false
     socket.emit('motor', {'direction': 1, 'motorR': 0, 'motorL': 0})
   }
 
