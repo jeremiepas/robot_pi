@@ -32,9 +32,6 @@ class Motorcar:
 	def forward(self, speedl, speedr):
 		self.left.forward(speedl)
 		self.right.forward(speedr)
-		# time.sleep(0.9)
-
-
 
 	def rearward(self, speedl, speedr):
 			self.left.rearward(speedl)

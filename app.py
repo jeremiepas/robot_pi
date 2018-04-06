@@ -41,7 +41,6 @@ def gen():
 
 @app.route('/video_feed')
 def video_feed():
-    """Video streaming route. Put this in the src attribute of an img tag."""
     return Response(gen(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
@@ -60,7 +59,6 @@ def ws_disconn():
 def ws_city(message):
     if message['direction'] == 1:
         print(message['direction'])
-        print(message['motorL'])
         car.forward(int(message['motorL']), int(message['motorR']))
     else:
         car.rearward(int(message['motorL']), int(message['motorR']))
