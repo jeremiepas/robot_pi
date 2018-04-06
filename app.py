@@ -1,5 +1,4 @@
 import cgi
-import redis
 import cv2
 from flask import Flask, render_template, request, Response
 from flask_socketio import SocketIO
