@@ -21,7 +21,7 @@ class Motor:
 	def rearward(self, speed):
 		vi = float(speed) + 5
 		print(1 if self.sensdfault == 1 else 0)
-		GPIO.output(self.gpsens,   1 if self.sensdfault == 1 else 0)
+		GPIO.output(self.gpsens,   1 if self.sensdfault != 1 else 0)
 		self.gpspeed.ChangeDutyCycle(vi)
 
 class Motorcar:
