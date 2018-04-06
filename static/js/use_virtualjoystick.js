@@ -28,6 +28,7 @@ setInterval(function(){
     socket.emit('motor', {'direction': 1, 'motorR': 90, 'motorL': 0})
     send = true
   } else if (send) {
+    console.log("send stop");
     send = false
     socket.emit('motor', {'direction': 1, 'motorR': 0, 'motorL': 0})
   }
