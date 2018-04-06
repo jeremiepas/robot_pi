@@ -57,8 +57,8 @@ def ws_disconn():
 
 @socketio.on('motor', namespace='/dd')
 def ws_city(message):
-    if message['direction'] == 1:
-        print(message['direction'])
+    print(message)
+    if message['direction'] == "1":
         car.forward(int(message['motorL']), int(message['motorR']))
     else:
         car.rearward(int(message['motorL']), int(message['motorR']))
