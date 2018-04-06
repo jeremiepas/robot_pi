@@ -8,7 +8,7 @@ import motors
 import time
 
 app = Flask(__name__, static_url_path='/static')
-db = redis.StrictRedis('localhost', 6379, 0)
+# db = redis.StrictRedis('localhost', 6379, 0)
 socketio = SocketIO(app)
 
 cap = cv2.VideoCapture(0)
@@ -67,4 +67,4 @@ def ws_city(message):
     # socketio.emit('motor', {'motor': cgi.escape(message['motor'])})
 
 if __name__ == '__main__':
-    socketio.run(app, "0.0.0.0", debug=True, threaded=True)
+    socketio.run(app, "0.0.0.0",  async_mode='gevent', debug=True, threaded=True)
