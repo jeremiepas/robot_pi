@@ -4,7 +4,7 @@ import cv2
 from flask import Flask, render_template, request, Response
 from flask_socketio import SocketIO
 import threading
-# import motors
+import motors
 
 app = Flask(__name__, static_url_path='/static')
 db = redis.StrictRedis('localhost', 6379, 0)
@@ -12,9 +12,9 @@ socketio = SocketIO(app)
 
 cap = cv2.VideoCapture(0)
 
-# motorR = motors.Motor(27,17,1)
-# motorL = motors.Motor(22,18,1)
-# car = motors.Motorcar(motorL, motorR)
+motorR = motors.Motor(27,17,1)
+motorL = motors.Motor(22,18,1)
+car = motors.Motorcar(motorL, motorR)
 
 @app.route('/')
 def main():
@@ -61,9 +61,9 @@ def ws_city(message):
     if message['direction']:
         print(message['direction'])
         print(message['motorL'])
-        # car.forward(int(message['motorL']), int(message['motorR']))
+        car.forward(int(message['motorL']), int(message['motorR']))
     else:
-        # car.rearward(int(message['motorL']), int(message['motorR']))
+        car.rearward(int(message['motorL']), int(message['motorR']))
         pass
     # socketio.emit('motor', {'motor': cgi.escape(message['motor'])})
 
