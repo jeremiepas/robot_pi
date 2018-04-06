@@ -33,4 +33,4 @@ setInterval(function(){
     + (joystick.up()	? ' up'		: '')
     + (joystick.left()	? ' left'	: '')
     + (joystick.down()	? ' down' 	: '');
-}, 1/30 * 1000);
+}, 1/30 * 10000);
