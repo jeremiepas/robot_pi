@@ -1,60 +1,68 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout/layout.html" %}
+{% block title %} Cam{% endblock %}
+{% block head %}
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  <div class="container">
+		<img id="img_jos" src="{{ url_for('video_feed') }}">
+		<div id="result">
+		</div>
+				<!-- <table style="width:100%; max-width: 500px; height:300px;">
+					<tr>
+						<td>
+							<form action="/1" method="POST">
+								<input type="image" name="direction" src="/static/img/left.svg" value="left" style="float:left; width:80% ;">
+								</br>
+							</form>
+						</td>
+						<td>
+							<form action="/2" method="POST">
+								<input type="image" name="direction" src="/static/img/forward.svg" value="forward" style="float:left; width:80%;">
+								</br>
+							</form>
+						</td>
+						<td>
 
-	<head>
-		<title>Robot Cam</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-	</head>
+							<form action="/3" method="POST">
+								<input type="image" name="direction" src="/static/img/right.svg" value="right" style="float:left; width:80%;">
+								</br>
+							</form>
 
-<style>
-table ,td, tr {
-		width: 30%;
-}
-</style>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form action="/4" method="POST">
+								<input type="image" name="direction" src="/static/img/reverse.svg" value="reverse" style=" margin-left:80px; width:80%;">
+								</br>
+							</form>
+						</td>
+						<td>
+							<form action="/5" method="POST">
+								<input type="image" name="direction" src="/static/img/stop.svg" value="stop" style="margin-left:80px; width:80%;">
+								</br>
+							</form>
+						</td>
+					</tr>
+				</table> -->
+  </div>
+{% endblock %}
+{% block includelink %}
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 
-	<body>
-		<img src="{{ url_for('video_feed') }}">
-
-
-		<table style="width:100%; max-width: 500px; height:300px;">
-			<tr>
-				<td>
-					<form action="/1" method="POST">
-						<input type="image" name="direction" src="/static/img/left.svg" value="left" style="float:left; width:80% ;">
-						</br>
-					</form>
-				</td>
-				<td>
-					<form action="/2" method="POST">
-						<input type="image" name="direction" src="/static/img/forward.svg" value="forward" style="float:left; width:80%;">
-						</br>
-					</form>
-				</td>
-				<td>
-
-					<form action="/3" method="POST">
-						<input type="image" name="direction" src="/static/img/right.svg" value="right" style="float:left; width:80%;">
-						</br>
-					</form>
-
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<form action="/4" method="POST">
-						<input type="image" name="direction" src="/static/img/reverse.svg" value="reverse" style=" margin-left:80px; width:80%;">
-						</br>
-					</form>
-				</td>
-				<td>
-					<form action="/5" method="POST">
-						<input type="image" name="direction" src="/static/img/stop.svg" value="stop" style="margin-left:80px; width:80%;">
-						</br>
-					</form>
-				</td>
-
-			</tr>
-		</table>
-
-	</body>
-</html>
+	<script type="text/javascript">
+			$(document).ready(function() {
+					var url = "http://" + document.domain + ":" + location.port;
+					var socket = io.connect(url + "/dd");
+					socket.on('msg', function(msg) {
+							$("#connected").html(msg.count);
+					});
+			});
+	</script>
+	<script src="{{url_for('static', filename='js/virtualjoystick.js')}}" charset="utf-8"></script>
+	<script src="{{url_for('static', filename='js/use_virtualjoystick.js')}}" charset="utf-8"></script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+{% endblock %}

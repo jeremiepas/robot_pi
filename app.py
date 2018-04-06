@@ -4,7 +4,7 @@ import cv2
 from flask import Flask, render_template, request, Response
 from flask_socketio import SocketIO
 import threading
-import motors
+# import motors
 
 app = Flask(__name__, static_url_path='/static')
 db = redis.StrictRedis('localhost', 6379, 0)
@@ -12,13 +12,13 @@ socketio = SocketIO(app)
 
 cap = cv2.VideoCapture(0)
 
-motorR = motors.Motor(27,17,1)
-motorL = motors.Motor(22,18,1)
-car = motors.Motorcar(motorL, motorR)
+# motorR = motors.Motor(27,17,1)
+# motorL = motors.Motor(22,18,1)
+# car = motors.Motorcar(motorL, motorR)
 
 @app.route('/')
 def main():
-    return render_template('pymeetups.html')
+    return render_template('index.html')
 
 
 
@@ -31,7 +31,6 @@ def gen():
     while(True):
         # Capture frame-by-frame
         ret, frame = cap.read()
-
         cv2.imwrite('t.jpg', frame)
         yield (b'--frame\r\n'
         b'Content-Type: image/jpeg\r\n\r\n' + open('t.jpg', 'rb').read() + b'\r\n')
@@ -62,11 +61,11 @@ def ws_city(message):
     if message['direction']:
         print(message['direction'])
         print(message['motorL'])
-        car.forward(int(message['motorL']), int(message['motorR']))
+        # car.forward(int(message['motorL']), int(message['motorR']))
     else:
-        car.rearward(int(message['motorL']), int(message['motorR']))
+        # car.rearward(int(message['motorL']), int(message['motorR']))
         pass
     # socketio.emit('motor', {'motor': cgi.escape(message['motor'])})
 
 if __name__ == '__main__':
-    socketio.run(app, "0.0.0.0", threaded=True)
+    socketio.run(app, "0.0.0.0", debug=True, threaded=True)
