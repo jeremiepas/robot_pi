@@ -58,9 +58,9 @@ def ws_disconn():
 @socketio.on('motor', namespace='/dd')
 def ws_city(message):
     if message['direction'] == "1":
+        print(message)
         car.forward(int(message['motorL']), int(message['motorR']))
     else:
-        print(message)
         car.rearward(int(message['motorL']), int(message['motorR']))
         pass
     # socketio.emit('motor', {'motor': cgi.escape(message['motor'])})
