@@ -5,6 +5,7 @@ from flask import Flask, render_template, request, Response
 from flask_socketio import SocketIO
 import threading
 import motors
+import time
 
 app = Flask(__name__, static_url_path='/static')
 db = redis.StrictRedis('localhost', 6379, 0)
@@ -34,6 +35,7 @@ def gen():
         cv2.imwrite('t.jpg', frame)
         yield (b'--frame\r\n'
         b'Content-Type: image/jpeg\r\n\r\n' + open('t.jpg', 'rb').read() + b'\r\n')
+        time.sleep( 5 )
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
@@ -58,7 +60,6 @@ def ws_disconn():
 @socketio.on('motor', namespace='/dd')
 def ws_city(message):
     if message['direction'] == 1:
-        print(message)
         car.forward(int(message['motorL']), int(message['motorR']))
     else:
         car.rearward(int(message['motorL']), int(message['motorR']))
