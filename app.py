@@ -63,6 +63,4 @@ def ws_city(message):
     # socketio.emit('motor', {'motor': cgi.escape(message['motor'])})
 
 if __name__ == '__main__':
-    backProc = Process(target=gen, args=())
-    backProc.start()
     socketio.run(app, host="0.0.0.0",  async_mode='gevent', debug=True, threaded=True)
