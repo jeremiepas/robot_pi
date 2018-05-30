@@ -45,9 +45,6 @@ def main():
 # acu = threading.Thread(target=test)
 # acu.start()
 
-@app.route('/pymeetups/')
-def pymeetups():
-
 
 @socketio.on('connect', namespace='/dd')
 def ws_conn():
@@ -69,4 +66,4 @@ def ws_city(message):
     # socketio.emit('motor', {'motor': cgi.escape(message['motor'])})
 
 if __name__ == '__main__':
-    socketio.run(host="0.0.0.0",  async_mode='gevent', debug=True, threaded=True)
+    socketio.run(app, host="0.0.0.0",  async_mode='gevent', debug=True, threaded=True)
