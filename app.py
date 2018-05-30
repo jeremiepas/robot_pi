@@ -1,5 +1,6 @@
 import cgi
 import cv2
+from multiprocessing import Process
 from flask import Flask, render_template, request, Response
 from flask_socketio import SocketIO
 import threading
@@ -16,10 +17,6 @@ motorR = motors.Motor(27,17,1)
 motorL = motors.Motor(22,18,1)
 car = motors.Motorcar(motorL, motorR)
 
-@app.route('/')
-def main():
-    return render_template('index.html')
-
 
 def gen():
     """Video streaming generator function."""
@@ -34,11 +31,11 @@ def gen():
 
 @app.route('/video_feed')
 def video_feed():
-    return Response(gen(),
+    return Response(backProc.pid,
         mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/')
-def main():
+def home():
     return render_template('index.html')
 
 #
@@ -66,4 +63,6 @@ def ws_city(message):
     # socketio.emit('motor', {'motor': cgi.escape(message['motor'])})
 
 if __name__ == '__main__':
+    backProc = Process(target=gen, args=())
+    backProc.start()
     socketio.run(app, host="0.0.0.0",  async_mode='gevent', debug=True, threaded=True)
