@@ -31,7 +31,7 @@ def gen():
 
 @app.route('/video_feed')
 def video_feed():
-    return Response(backProc.pid,
+    return Response(gen(),
         mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/')
@@ -63,4 +63,6 @@ def ws_city(message):
     # socketio.emit('motor', {'motor': cgi.escape(message['motor'])})
 
 if __name__ == '__main__':
-    socketio.run(app, host="0.0.0.0",   debug=True, threaded=True)
+    # backProc = Process(target=gen, args=())
+    # backProc.start()
+    socketio.run(app, host="0.0.0.0",  debug=True, threaded=True)
