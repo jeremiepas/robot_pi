@@ -1,7 +1,6 @@
 import cgi
 import cv2
 import asyncio
-from multiprocessing import Process
 from flask import Flask, render_template, request, Response
 from flask_socketio import SocketIO
 import threading
@@ -68,4 +67,4 @@ if __name__ == '__main__':
     # loop = asyncio.get_event_loop()
     # backProc = Process(target=gen, args=())
     # backProc.start()
-    socketio.run(app, host="0.0.0.0",  debug=True, threaded=True)
+    socketio.run(app, "0.0.0.0",  debug=True, threaded=True)
