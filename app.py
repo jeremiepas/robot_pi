@@ -1,5 +1,6 @@
 import cgi
 import cv2
+import asyncio
 from multiprocessing import Process
 from flask import Flask, render_template, request, Response
 from flask_socketio import SocketIO
@@ -18,7 +19,8 @@ motorL = motors.Motor(22,18,1)
 car = motors.Motorcar(motorL, motorR)
 
 
-def gen():
+async def gen():
+
     """Video streaming generator function."""
     while(True):
         # Capture frame-by-frame
@@ -63,6 +65,7 @@ def ws_city(message):
     # socketio.emit('motor', {'motor': cgi.escape(message['motor'])})
 
 if __name__ == '__main__':
+    # loop = asyncio.get_event_loop()
     # backProc = Process(target=gen, args=())
     # backProc.start()
     socketio.run(app, host="0.0.0.0",  debug=True, threaded=True)
