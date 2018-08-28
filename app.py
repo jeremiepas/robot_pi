@@ -19,7 +19,6 @@ car = motors.Motorcar(motorL, motorR)
 
 
 async def gen():
-
     """Video streaming generator function."""
     while(True):
         # Capture frame-by-frame
@@ -64,7 +63,7 @@ def ws_city(message):
     # socketio.emit('motor', {'motor': cgi.escape(message['motor'])})
 
 if __name__ == '__main__':
-    # loop = asyncio.get_event_loop()
+    loop = asyncio.get_event_loop()
     # backProc = Process(target=gen, args=())
     # backProc.start()
     socketio.run(app, "0.0.0.0",  debug=True, threaded=True)
